@@ -311,7 +311,11 @@ public abstract class TestBase implements ITestBase {
             if (PropHelper.ENABLE_PENETRATION_TEST) {
                 proxyWrapper.setChainedProxy(PropHelper.ZAP_SERVER_HOST, PropHelper.ZAP_SERVER_PORT);
             }
-            realProxy = ClientUtil.createSeleniumProxy(proxyWrapper.getProxy());
+            if (PropHelper.getProperty("proxy.address").equals("hostname")) {
+                realProxy = ClientUtil.createSeleniumProxy(proxyWrapper.getProxy());
+            } else {
+                realProxy = ProxyWrapper.createSeleniumProxy(proxyWrapper.getProxy());
+            }
         } else {
             if (PropHelper.ENABLE_PENETRATION_TEST) {
                 String proxyStr = String.format("%s:%d", PropHelper.ZAP_SERVER_HOST, PropHelper.ZAP_SERVER_PORT);
